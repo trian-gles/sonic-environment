@@ -12,7 +12,7 @@ public class SpiritController : MonoBehaviour
     private int objno;
     rtcmixmain RTcmix;
     private bool did_start = false;
-    private float[] pitches = { 8.00f, 8.02f, 8.04f, 8.06f, 8.07f };
+    private float[] pitches = { 9.00f, 9.02f, 9.04f, 9.06f, 9.07f };
     private float pitch;
     // Start is called before the first frame update
     void Start()
@@ -30,6 +30,11 @@ public class SpiritController : MonoBehaviour
         did_start = true;
         pitch = pitches[objno % pitches.Length];
 
+        RTcmix.SendScore("ampval = makeconnection(\"inlet\", 1, 0)  " + "smoothAmp = makefilter(ampval, \"smooth\", 20)" + 
+            $"WAVETABLE(0, 99999, smoothAmp, {pitch}, 0.5)", objno);
+        RTcmix.setpfieldRTcmix(1, 0, objno);
+
+
 
     }
 
@@ -43,10 +48,36 @@ public class SpiritController : MonoBehaviour
 
             if (Vector3.Distance(transform.position, targetPos) < moveSize * Time.deltaTime)
             {
+                targets[targetNum].GetComponent<OrbController>().PlaySound();
                 UpdateTarget();
-                RTcmix.SendScore($"WAVETABLE(0, 0.2, 20000, {pitch}, 0.5)", objno);
+                
             }
         }
+    }
+
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "Spirit")
+        {
+            SphereCollider selfColl = GetComponent<SphereCollider>();
+            float dist = Vector3.Distance(transform.position, other.gameObject.transform.position);
+            float amp = (selfColl.radius - dist) * 10000;
+            RTcmix.setpfieldRTcmix(1, amp, objno);
+            SpiritController otherSpirit = other.gameObject.GetComponent<SpiritController>();
+
+            // Flip if the target is moving in the same direction
+            if ((targetNum == otherSpirit.targetNum) && (backwards == otherSpirit.backwards))
+            {
+                backwards = !backwards;
+            }
+        }
+        
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        RTcmix.setpfieldRTcmix(1, 0, objno);
     }
 
     public void UpdateTarget()
