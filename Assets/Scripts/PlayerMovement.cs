@@ -32,13 +32,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("Click");
             Instantiate(dropObs[selectedOb], dropPos.transform.position, Quaternion.identity);
-            foreach (GameObject spirit in GameObject.FindGameObjectsWithTag("Spirit"))
-            {
-                SpiritController spCon = spirit.GetComponent<SpiritController>();
-                spCon.UpdateTarget();
-            }
         }
 
         if (Input.GetKeyDown("q"))
