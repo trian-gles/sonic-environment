@@ -1,0 +1,1 @@
+WAVETABLE(0, 0.2, 10000, pitch, 0.5)

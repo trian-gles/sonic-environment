@@ -8,6 +8,12 @@ public class OrbController : MonoBehaviour
     private int objno;
     private float[] pitches = { 8.00f, 8.02f, 8.04f, 8.06f, 8.07f };
     private float pitch;
+    private Vector3 targetScale;
+    public Vector3 burstScale = new Vector3(2, 2, 2);
+    public float burstDecay = 0.01f;
+
+    public float maxIntensity = 5f;
+    public TextAsset rtcScore;
 
     rtcmixmain RTcmix;
     private bool did_start = false;
@@ -19,6 +25,7 @@ public class OrbController : MonoBehaviour
 
     private void Awake()
     {
+        targetScale = transform.localScale;
         foreach (GameObject spirit in GameObject.FindGameObjectsWithTag("Spirit"))
         {
             SpiritController spCon = spirit.GetComponent<SpiritController>();
@@ -31,18 +38,43 @@ public class OrbController : MonoBehaviour
         RTcmix.initRTcmix(objno);
 
         did_start = true;
-        pitch = pitches[objno % pitches.Length];
+        pitch = pitches[objno % pitches.Length]; 
     }
 
     public void PlaySound()
     {
-        RTcmix.SendScore($"WAVETABLE(0, 0.2, 10000, {pitch}, 0.5)", objno);
+        RTcmix.SendScore($"pitch = {pitch}" + rtcScore.text, objno);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        float stepSize = burstDecay * Time.deltaTime;
+
+        if (Vector3.Distance(transform.localScale, targetScale) > stepSize)
+        {
+            transform.localScale = Vector3.MoveTowards(transform.localScale, targetScale, burstDecay * stepSize);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Spirit Collision");
+        if (other.GetType() == typeof(CapsuleCollider))
+        {
+            other.gameObject.GetComponent<SpiritController>().OnOrbCollision();
+            PlaySound();
+            Burst();
+        }
+    }
+
+    private void Burst()
+    {
+        Vector3 newScale = new Vector3();
+        newScale.x = burstScale.x;
+        newScale.y = burstScale.y;
+        newScale.z = burstScale.z;
+        transform.localScale = newScale;
     }
 
     void OnAudioFilterRead(float[] data, int channels)

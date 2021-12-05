@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3584593076663693053}
   - component: {fileID: 1734143229615652662}
   - component: {fileID: 8645637787521887900}
+  - component: {fileID: 3714527733665956993}
   m_Layer: 0
   m_Name: Orb
   m_TagString: Orb
@@ -93,7 +94,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.01
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1734143229615652662
 MonoBehaviour:
@@ -107,6 +108,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 352a9a3e6bbc41f478f59484ee6d32f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  burstScale: {x: 2, y: 2, z: 2}
+  burstDecay: 2
 --- !u!82 &8645637787521887900
 AudioSource:
   m_ObjectHideFlags: 0
@@ -203,3 +206,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &3714527733665956993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 271461613869723549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 0.171
+  sharedProfile: {fileID: 11400000, guid: 0f63d0e307c54194a93d26855fb247da, type: 2}

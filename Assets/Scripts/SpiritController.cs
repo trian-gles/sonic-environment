@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class SpiritController : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class SpiritController : MonoBehaviour
     private bool did_start = false;
     private float[] pitches = { 9.00f, 9.02f, 9.04f, 9.06f, 9.07f };
     private float pitch;
+
+    [SerializeField] private UnityEngine.Rendering.Volume volume;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,7 +33,7 @@ public class SpiritController : MonoBehaviour
         did_start = true;
         pitch = pitches[objno % pitches.Length];
 
-        RTcmix.SendScore("ampval = makeconnection(\"inlet\", 1, 0)  " + "smoothAmp = makefilter(ampval, \"smooth\", 20)" + 
+        RTcmix.SendScore("ampval = makeconnection(\"inlet\", 1, 0)  " + "smoothAmp = makefilter(ampval, \"smooth\", 50)" + 
             $"WAVETABLE(0, 99999, smoothAmp, {pitch}, 0.5)", objno);
         RTcmix.setpfieldRTcmix(1, 0, objno);
 
@@ -46,15 +49,22 @@ public class SpiritController : MonoBehaviour
             Vector3 targetPos = targets[targetNum].transform.position;
             transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSize * Time.deltaTime);
 
-            if (Vector3.Distance(transform.position, targetPos) < moveSize * Time.deltaTime)
-            {
-                targets[targetNum].GetComponent<OrbController>().PlaySound();
-                UpdateTarget();
-                
-            }
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Spirit Collision");
+        if (other.gameObject == targets[targetNum])
+        {
+            
+        }
+    }
+
+    public void OnOrbCollision()
+    {
+        UpdateTarget();
+    }
 
     private void OnTriggerStay(Collider other)
     {
@@ -71,13 +81,22 @@ public class SpiritController : MonoBehaviour
             {
                 backwards = !backwards;
             }
+
+            volume.weight = (selfColl.radius - dist) / selfColl.radius;
         }
         
     }
 
     private void OnTriggerExit(Collider other)
     {
-        RTcmix.setpfieldRTcmix(1, 0, objno);
+        if (other.gameObject.tag == "Spirit")
+        {
+            RTcmix.setpfieldRTcmix(1, 0, objno);
+            volume.weight = 0;
+        }
+
+
+            
     }
 
     public void UpdateTarget()
