@@ -111,6 +111,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSize: 8
+  rtcScore: {fileID: 4900000, guid: d153a5fa06317d747ab9d3609915c09a, type: 3}
   volume: {fileID: 7259730073024213767}
 --- !u!82 &1979890045800617104
 AudioSource:

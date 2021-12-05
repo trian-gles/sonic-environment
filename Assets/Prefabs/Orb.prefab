@@ -110,6 +110,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burstScale: {x: 2, y: 2, z: 2}
   burstDecay: 2
+  maxIntensity: 5
+  rtcScore: {fileID: 4900000, guid: a3f4667c5d0a9d247ae445efbc340175, type: 3}
 --- !u!82 &8645637787521887900
 AudioSource:
   m_ObjectHideFlags: 0

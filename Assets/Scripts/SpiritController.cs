@@ -15,6 +15,7 @@ public class SpiritController : MonoBehaviour
     private bool did_start = false;
     private float[] pitches = { 9.00f, 9.02f, 9.04f, 9.06f, 9.07f };
     private float pitch;
+    public TextAsset rtcScore;
 
     [SerializeField] private UnityEngine.Rendering.Volume volume;
     // Start is called before the first frame update
@@ -33,8 +34,7 @@ public class SpiritController : MonoBehaviour
         did_start = true;
         pitch = pitches[objno % pitches.Length];
 
-        RTcmix.SendScore("ampval = makeconnection(\"inlet\", 1, 0)  " + "smoothAmp = makefilter(ampval, \"smooth\", 50)" + 
-            $"WAVETABLE(0, 99999, smoothAmp, {pitch}, 0.5)", objno);
+        RTcmix.SendScore($"pitch = {pitch}" + rtcScore.text, objno);
         RTcmix.setpfieldRTcmix(1, 0, objno);
 
 
@@ -72,7 +72,7 @@ public class SpiritController : MonoBehaviour
         {
             SphereCollider selfColl = GetComponent<SphereCollider>();
             float dist = Vector3.Distance(transform.position, other.gameObject.transform.position);
-            float amp = (selfColl.radius - dist) * 10000;
+            float amp = (selfColl.radius - dist) /selfColl.radius;
             RTcmix.setpfieldRTcmix(1, amp, objno);
             SpiritController otherSpirit = other.gameObject.GetComponent<SpiritController>();
 

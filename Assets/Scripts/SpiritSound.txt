@@ -1,0 +1,6 @@
+
+freq = cpspch(pitch)
+ampval = makeconnection("inlet", 1, 0)
+smoothAmp = makefilter(ampval, "smooth", 50)
+vibwave = maketable("wave", 1000, "sine")
+MBOWED(0, 9999, 10000 * ampval, freq, 5, 7, 0.02, 0.5, (ampval + 1) / 2, (ampval + 1) / 2, (ampval + 1) / 2, vibwave)
