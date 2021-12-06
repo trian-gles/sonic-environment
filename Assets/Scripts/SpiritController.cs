@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 
 public class SpiritController : MonoBehaviour
 {
@@ -16,8 +15,6 @@ public class SpiritController : MonoBehaviour
     private float[] pitches = { 9.00f, 9.02f, 9.04f, 9.06f, 9.07f };
     private float pitch;
     public TextAsset rtcScore;
-
-    [SerializeField] private UnityEngine.Rendering.Volume volume;
     // Start is called before the first frame update
     void Start()
     {
@@ -81,8 +78,7 @@ public class SpiritController : MonoBehaviour
             {
                 backwards = !backwards;
             }
-
-            volume.weight = (selfColl.radius - dist) / selfColl.radius;
+            
         }
         
     }
@@ -92,7 +88,6 @@ public class SpiritController : MonoBehaviour
         if (other.gameObject.tag == "Spirit")
         {
             RTcmix.setpfieldRTcmix(1, 0, objno);
-            volume.weight = 0;
         }
 
 

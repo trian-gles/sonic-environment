@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 1979890045800617104}
   - component: {fileID: -192588972156272339}
   - component: {fileID: 560684456546735218}
-  - component: {fileID: 7259730073024213767}
   m_Layer: 0
   m_Name: Spirit
   m_TagString: Spirit
@@ -112,7 +111,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSize: 8
   rtcScore: {fileID: 4900000, guid: d153a5fa06317d747ab9d3609915c09a, type: 3}
-  volume: {fileID: 7259730073024213767}
+  volume: {fileID: 0}
 --- !u!82 &1979890045800617104
 AudioSource:
   m_ObjectHideFlags: 0
@@ -239,20 +238,3 @@ CapsuleCollider:
   m_Height: 0.4
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7259730073024213767
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8767876100011194833}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isGlobal: 0
-  priority: 0
-  blendDistance: 10
-  weight: 0
-  sharedProfile: {fileID: 11400000, guid: d5c7cce8cf09a6c44b1056643a95cf16, type: 2}

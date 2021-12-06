@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     public CharacterController controller;
     public GameObject dropPos;
     public GameObject[] dropObs;
+    private List<GameObject> existingObs;
     private int selectedOb = 0;
 
     public float speed = 12;
@@ -24,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         UpdateMaterial();
+        existingObs = new List<GameObject>();
     }
 
     // Update is called once per frame
@@ -32,7 +34,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            Instantiate(dropObs[selectedOb], dropPos.transform.position, Quaternion.identity);
+            var newObj = Instantiate(dropObs[selectedOb], dropPos.transform.position, Quaternion.identity);
+            existingObs.Add(newObj);
         }
 
         if (Input.GetKeyDown("q"))
@@ -49,6 +52,12 @@ public class PlayerMovement : MonoBehaviour
         {
             selectedOb = (selectedOb + 1) % dropObs.Length;
             UpdateMaterial();
+        }
+
+        if (Input.GetKeyDown("backspace"))
+        {
+            Debug.Log("backspace");
+            DeleteLastObj();
         }
 
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
@@ -72,6 +81,19 @@ public class PlayerMovement : MonoBehaviour
 
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
+    }
+
+    void DeleteLastObj()
+    {
+        int i = existingObs.Count - 1;
+        GameObject lastObj = existingObs[i];
+        existingObs.RemoveAt(i);
+        Destroy(lastObj);
+        foreach (GameObject spirit in GameObject.FindGameObjectsWithTag("Spirit"))
+        {
+            SpiritController spCon = spirit.GetComponent<SpiritController>();
+            spCon.UpdateTarget();
+        }
     }
 
     void UpdateMaterial()
