@@ -16,6 +16,7 @@ public class SpiritController : MonoBehaviour
     private float pitch;
     public TextAsset rtcScore;
     public ParticleSystem partSys;
+    public ParticleSystem smokeSys;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,12 +28,15 @@ public class SpiritController : MonoBehaviour
         UpdateTarget();
 
         partSys = transform.Find("Flare/Sparks").GetComponent<ParticleSystem>();
+        smokeSys = transform.Find("Flare/Smoke").GetComponent<ParticleSystem>();
         objno = GameObject.FindGameObjectsWithTag("Spirit").Length;
         RTcmix = GameObject.Find("RTcmixmain").GetComponent<rtcmixmain>();
         RTcmix.initRTcmix(objno);
 
         did_start = true;
         pitch = pitches[objno % pitches.Length];
+
+        
 
         RTcmix.SendScore($"pitch = {pitch}" + rtcScore.text, objno);
         RTcmix.setpfieldRTcmix(1, 0, objno);
@@ -91,6 +95,9 @@ public class SpiritController : MonoBehaviour
         RTcmix.setpfieldRTcmix(1, ratio, objno);
         var main = partSys.main;
         main.startLifetime = 0.5f * ratio;
+
+        var main2 = smokeSys.main;
+        main2.startLifetime = 5 * ratio;
     }
 
     private void OnTriggerExit(Collider other)

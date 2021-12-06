@@ -14401,6 +14401,7 @@ MonoBehaviour:
   moveSize: 8
   rtcScore: {fileID: 4900000, guid: d153a5fa06317d747ab9d3609915c09a, type: 3}
   partSys: {fileID: 0}
+  smokeSys: {fileID: 0}
 --- !u!82 &1979890045800617104
 AudioSource:
   m_ObjectHideFlags: 0

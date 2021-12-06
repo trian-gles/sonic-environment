@@ -8,6 +8,7 @@ public class OrbController : MonoBehaviour
     private int objno;
     private float[] pitches = { 8.00f, 8.02f, 8.04f, 8.06f, 8.07f };
     private float pitch;
+    private float amp = 25000;
     private Vector3 targetScale;
     public Vector3 burstScale = new Vector3(2, 2, 2);
     public float burstDecay = 0.01f;
@@ -38,12 +39,18 @@ public class OrbController : MonoBehaviour
         RTcmix.initRTcmix(objno);
 
         did_start = true;
-        pitch = pitches[objno % pitches.Length]; 
+        pitch = pitches[objno % pitches.Length];
+        
+        if (transform.position.y > 10)
+        {
+            pitch += 1;
+            amp -= 15000;
+        }
     }
 
     public void PlaySound()
     {
-        RTcmix.SendScore($"pitch = {pitch}" + rtcScore.text, objno);
+        RTcmix.SendScore($"pitch = {pitch} \namp = {amp}" + rtcScore.text, objno);
     }
 
     // Update is called once per frame
