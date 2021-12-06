@@ -8080,7 +8080,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: bcae914220acd4907840a029bb9d9aec, type: 3}
       propertyPath: m_LocalScale.x
-      value: 20
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: bcae914220acd4907840a029bb9d9aec, type: 3}
       propertyPath: m_LocalScale.z

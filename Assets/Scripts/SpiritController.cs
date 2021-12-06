@@ -15,6 +15,7 @@ public class SpiritController : MonoBehaviour
     private float[] pitches = { 9.00f, 9.02f, 9.04f, 9.06f, 9.07f };
     private float pitch;
     public TextAsset rtcScore;
+    public ParticleSystem partSys;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +25,8 @@ public class SpiritController : MonoBehaviour
     private void Awake()
     {
         UpdateTarget();
+
+        partSys = transform.Find("Flare/Sparks").GetComponent<ParticleSystem>();
         objno = GameObject.FindGameObjectsWithTag("Spirit").Length;
         RTcmix = GameObject.Find("RTcmixmain").GetComponent<rtcmixmain>();
         RTcmix.initRTcmix(objno);
@@ -69,8 +72,8 @@ public class SpiritController : MonoBehaviour
         {
             SphereCollider selfColl = GetComponent<SphereCollider>();
             float dist = Vector3.Distance(transform.position, other.gameObject.transform.position);
-            float amp = (selfColl.radius - dist) /selfColl.radius;
-            RTcmix.setpfieldRTcmix(1, amp, objno);
+            float ratio = (selfColl.radius - dist) / selfColl.radius;
+            SetAmpAndPart(ratio);
             SpiritController otherSpirit = other.gameObject.GetComponent<SpiritController>();
 
             // Flip if the target is moving in the same direction
@@ -81,6 +84,13 @@ public class SpiritController : MonoBehaviour
             
         }
         
+    }
+
+    private void SetAmpAndPart(float ratio)
+    {
+        RTcmix.setpfieldRTcmix(1, ratio, objno);
+        var main = partSys.main;
+        main.startLifetime = 0.5f * ratio;
     }
 
     private void OnTriggerExit(Collider other)
